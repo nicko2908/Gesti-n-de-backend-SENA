@@ -1,0 +1,12 @@
+/* Estilos base de la aplicación. */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', '-apple-system', 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}

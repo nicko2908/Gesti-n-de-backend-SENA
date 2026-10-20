@@ -1,0 +1,181 @@
+/*
+  Estilos de los modales de formulario (crear / editar).
+  Se apoyan en las variables de tema definidas en App.vue.
+*/
+
+.form-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  max-width: 94vw;
+  max-height: 90vh;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text-strong);
+}
+
+/* ------------------------------- Cabecera -------------------------------- */
+.form-dialog__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 20px 16px;
+  flex: 0 0 auto;
+}
+
+.form-dialog__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 12px;
+  background: color-mix(
+    in srgb,
+    var(--form-accent, var(--color-principal)) 14%,
+    transparent
+  );
+  color: var(--form-accent, var(--color-principal));
+}
+
+.form-dialog__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-dialog__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-strong);
+}
+
+.form-dialog__subtitle {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.form-dialog__close {
+  margin: -4px -4px 0 0;
+  color: var(--text-soft);
+}
+
+.form-dialog__close:hover {
+  background: var(--row-hover);
+  color: var(--text-strong);
+}
+
+/* --------------------------------- Cuerpo -------------------------------- */
+.form-dialog__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.form-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 18px 20px 20px;
+  overflow-y: auto;
+  max-height: 62vh;
+}
+
+.form-dialog .q-field--outlined .q-field__control {
+  border-radius: 10px;
+}
+
+.form-section + .form-section {
+  margin-top: 18px;
+}
+
+.form-section__title {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ------------------------------- Avisos ---------------------------------- */
+.form-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--form-accent, var(--color-principal)) 28%,
+    transparent
+  );
+  border-radius: 10px;
+  background: color-mix(
+    in srgb,
+    var(--form-accent, var(--color-principal)) 8%,
+    transparent
+  );
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.form-notice > .q-icon {
+  color: var(--form-accent, var(--color-principal));
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.form-notice__link {
+  color: var(--link);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.form-notice__link:focus-visible {
+  outline: 2px solid var(--color-principal);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* --------------------------------- Pie ----------------------------------- */
+.form-dialog__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px;
+  flex: 0 0 auto;
+  border-top: 1px solid var(--table-line);
+  background: color-mix(in srgb, var(--surface-alt) 60%, var(--surface));
+}
+
+.form-dialog__foot .q-btn {
+  border-radius: 10px;
+}
+
+/* ------------------------------- Responsive ------------------------------ */
+@media (max-width: 599.98px) {
+  .form-dialog__head {
+    padding: 16px 16px 12px;
+  }
+
+  .form-dialog__body {
+    padding: 14px 16px 16px;
+    max-height: 64vh;
+  }
+
+  .form-dialog__foot {
+    padding: 12px 16px;
+  }
+
+  .form-dialog__foot .q-btn {
+    flex: 1;
+  }
+}

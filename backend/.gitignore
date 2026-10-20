@@ -1,0 +1,7 @@
+node_modules
+.env
+*.log
+
+# Build del frontend que este servidor publica (se copia con
+# "npm run deploy:backend" desde la carpeta frontend).
+public

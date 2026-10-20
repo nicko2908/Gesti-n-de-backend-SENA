@@ -1,0 +1,390 @@
+/*
+  Estilos compartidos de las tablas del panel.
+  Se apoyan en las variables de tema definidas en App.vue.
+*/
+
+/* --------------------------- Cabecera de página --------------------------- */
+.page-head {
+  margin-bottom: 1.1rem;
+}
+
+.page-head__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-strong);
+}
+
+.page-head__subtitle {
+  margin: 2px 0 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* ------------------------------ Panel / tarjeta --------------------------- */
+.table-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.table-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px 14px;
+}
+
+.table-panel__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.table-panel__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-strong);
+}
+
+.table-panel__subtitle {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.table-panel__create {
+  border-radius: 10px;
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+/* --------------------------------- Toolbar -------------------------------- */
+.table-panel__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px 16px;
+}
+
+.table-panel__search {
+  flex: 0 1 340px;
+  min-width: 220px;
+}
+
+.table-panel__search .q-field__control {
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.table-panel__search .q-field__marginal,
+.table-panel__search .q-field__native {
+  color: var(--text-muted);
+}
+
+.table-panel__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip {
+  padding: 6px 14px;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.filter-chip:hover {
+  background: var(--row-hover);
+  color: var(--text-strong);
+}
+
+.filter-chip:focus-visible {
+  outline: 2px solid var(--color-principal);
+  outline-offset: 2px;
+}
+
+.filter-chip--active,
+.filter-chip--active:hover {
+  background: var(--color-principal);
+  border-color: var(--color-principal);
+  color: #ffffff;
+}
+
+.table-panel__count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+/* -------------------------------- Tabla base ------------------------------ */
+.table-panel .q-table__container {
+  background: transparent;
+  color: var(--text-strong);
+}
+
+.table-panel .q-table__card {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--text-strong);
+}
+
+/* En oscuro, Quasar (y App.vue) pintan el contenedor: lo dejamos transparente
+   para que se vea el fondo del panel. */
+body.body--dark .table-panel .q-table__card {
+  background: transparent;
+  color: var(--text-strong);
+}
+
+.table-panel .q-table__middle {
+  overflow-x: auto;
+}
+
+.table-panel .q-table thead tr {
+  background: var(--table-head-bg);
+}
+
+.table-panel .q-table thead th {
+  height: 42px;
+  padding: 10px 16px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-color: var(--table-line);
+}
+
+.table-panel .q-table thead th .q-table__sort-icon {
+  color: var(--text-soft);
+}
+
+.table-panel .q-table tbody td {
+  height: 56px;
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  color: var(--text-strong);
+  border-color: var(--table-line);
+  vertical-align: middle;
+}
+
+.table-panel .q-table thead,
+.table-panel .q-table tr,
+.table-panel .q-table th,
+.table-panel .q-table td {
+  border-color: var(--table-line);
+}
+
+/* Hover de fila: Quasar lo pinta con un overlay en td::before. */
+body .table-panel .q-table > tbody > tr:hover > td::before {
+  background: var(--row-hover);
+}
+
+.table-panel .q-table tbody tr:last-child td {
+  border-bottom-width: 0;
+}
+
+/* ------------------------------- Paginación ------------------------------- */
+body .table-panel .q-table__bottom {
+  min-height: 52px;
+  padding: 8px 18px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+body .table-panel .q-table__bottom:not(.q-table__bottom--nodata) {
+  border-top: 1px solid var(--table-line);
+}
+
+.table-panel .q-table__bottom .q-table__control {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.table-panel .q-table__bottom .q-btn {
+  border-radius: 8px;
+  color: var(--text-muted);
+}
+
+.table-panel .q-table__bottom .q-btn:hover {
+  background: var(--row-hover);
+  color: var(--text-strong);
+}
+
+/* ----------------------------- Chip de estado ----------------------------- */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.status-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-chip--on {
+  background: var(--chip-ok-bg);
+  color: var(--chip-ok-text);
+}
+
+.status-chip--off {
+  background: var(--chip-off-bg);
+  color: var(--chip-off-text);
+}
+
+/* ------------------------- Celda de usuario / curso ----------------------- */
+.cell-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cell-user__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: hsl(var(--avatar-hue, 110) 55% 42% / 0.15);
+  color: hsl(var(--avatar-hue, 110) 55% 32%);
+}
+
+body.body--dark .cell-user__avatar {
+  background: hsl(var(--avatar-hue, 110) 60% 60% / 0.18);
+  color: hsl(var(--avatar-hue, 110) 70% 74%);
+}
+
+/* Avatar con icono (cursos) */
+.cell-user__avatar--icon {
+  --avatar-hue: 110;
+  background: color-mix(in srgb, var(--color-principal) 14%, transparent);
+  color: var(--color-secundario);
+}
+
+body.body--dark .cell-user__avatar--icon {
+  background: color-mix(in srgb, var(--c-green) 16%, transparent);
+  color: var(--c-green);
+}
+
+.cell-user__body {
+  min-width: 0;
+}
+
+.cell-user__name {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-strong);
+}
+
+.cell-user__meta {
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.cell-sub {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+/* ------------------------------- Acciones -------------------------------- */
+.row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.row-actions .q-btn {
+  border-radius: 8px;
+  transition: background 0.18s ease;
+}
+
+.row-actions .q-btn:hover {
+  background: var(--row-hover);
+}
+
+/* ------------------------------ Estado vacío ------------------------------ */
+.table-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 40px 16px;
+  text-align: center;
+}
+
+.table-empty__icon {
+  color: var(--text-soft);
+  opacity: 0.8;
+}
+
+.table-empty__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.table-empty__text {
+  max-width: 340px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ------------------------------- Responsive ------------------------------- */
+@media (max-width: 599.98px) {
+  .table-panel__head {
+    flex-wrap: wrap;
+    padding: 16px 16px 12px;
+  }
+
+  .table-panel__toolbar {
+    padding: 0 16px 14px;
+  }
+
+  .table-panel__search {
+    flex: 1 1 100%;
+  }
+
+  .table-panel__count {
+    margin-left: 0;
+  }
+}

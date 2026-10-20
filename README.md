@@ -116,6 +116,56 @@ Abre `http://localhost:4500`.
 > `npm run deploy:backend` ejecuta el build de Vite (`dist/`) y luego
 > `scripts/deploy.js` copia el resultado a `backend/public/`.
 
+## Despliegue en Render (un solo servicio)
+
+El repositorio se despliega como **un único Web Service**: Render compila el
+frontend, lo copia a `backend/public/` y arranca Express, que sirve la API y la
+aplicación al mismo tiempo.
+
+En Render:
+
+| Campo | Valor |
+|---|---|
+| Tipo | Web Service |
+| Root Directory | *(vacío)* |
+| Build Command | `npm run build` |
+| Start Command | `npm start` |
+| Health Check Path | `/life` |
+
+Variables de entorno que debes configurar en el panel:
+
+| Variable | Descripción |
+|---|---|
+| `MONGO_URL` | Cadena de conexión de MongoDB Atlas |
+| `SECRETORPRIVATEKEY` | Clave con la que se firman los JWT |
+
+También puedes crear el servicio desde el blueprint `render.yaml` que está en
+la raíz del proyecto.
+
+### Desde local
+
+```bash
+# Compila el frontend, lo copia a backend/public e instala el backend
+npm run build
+
+# Levanta API + frontend en http://localhost:4500
+npm start
+```
+
+Para desarrollo se mantienen los dos procesos (con recarga en caliente):
+
+```bash
+npm run dev:backend    # http://localhost:4500
+npm run dev:frontend   # http://localhost:5173
+```
+
+### Notas importantes
+
+- La base de datos no se aloja en Render: usa MongoDB Atlas y ejecuta el seed
+  (`npm run seed`) apuntando a esa base.
+- `backend/public/` está ignorado por Git; se regenera en cada build.
+- Cada cambio en el frontend requiere volver a ejecutar `npm run build`.
+
 ## API disponible
 
 | Método | Ruta | Descripción | Token |

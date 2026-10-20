@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: guaika
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /life
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Se configuran manualmente en el panel de Render.
+      - key: MONGO_URL
+        sync: false
+      - key: SECRETORPRIVATEKEY
+        sync: false

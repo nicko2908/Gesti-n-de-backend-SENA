@@ -1,0 +1,16 @@
+{
+  "name": "guaika",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Guaika: frontend Vue + backend Express publicados como un solo servicio",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "npm --prefix frontend ci --include=dev && npm --prefix frontend run deploy:backend && npm --prefix backend ci",
+    "start": "npm --prefix backend start",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "seed": "npm --prefix backend run seed"
+  }
+}

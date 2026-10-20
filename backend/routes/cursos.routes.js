@@ -15,7 +15,6 @@ const {
   updateCurso,
   activeCurso,
   inactiveCurso,
-  deleteCurso,
 } = cursoCtrl;
 
 const routerCurso = Router();
@@ -37,8 +36,5 @@ routerCurso.put("/active/:id", validateExistCurso, activeCurso);
 
 // PUT    /api/cursos/inactive/:id -> desactivar
 routerCurso.put("/inactive/:id", validateExistCurso, inactiveCurso);
-
-// DELETE /api/cursos/:id        -> eliminar del sistema
-routerCurso.delete("/:id", validateExistCurso, deleteCurso);
 
 export { routerCurso };

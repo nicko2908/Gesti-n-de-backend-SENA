@@ -1,5 +1,4 @@
 import Curso from "../models/Curso.js";
-import Aprendiz from "../models/Aprendiz.js";
 
 const cursoCtrl = {};
 
@@ -76,26 +75,6 @@ cursoCtrl.inactiveCurso = async (req, res) => {
   try {
     await Curso.findByIdAndUpdate(id, { status: 1 });
     res.json({ msg: "Curso desactivado correctamente" });
-  } catch (error) {
-    res.status(400).json({ msg: "No fue posible terminar la operacion" });
-  }
-};
-
-// Eliminar un curso del sistema. No se permite si tiene aprendices asignados
-// (dejaria aprendices apuntando a un curso inexistente).
-cursoCtrl.deleteCurso = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const asignados = await Aprendiz.countDocuments({ curso: id });
-
-    if (asignados > 0) {
-      return res.status(400).json({
-        msg: `No se puede eliminar el curso: tiene ${asignados} aprendiz(es) asignado(s). Reasignalos o eliminalos primero.`,
-      });
-    }
-
-    await Curso.findByIdAndDelete(id);
-    res.json({ msg: "Curso eliminado correctamente" });
   } catch (error) {
     res.status(400).json({ msg: "No fue posible terminar la operacion" });
   }

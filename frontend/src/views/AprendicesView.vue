@@ -118,18 +118,6 @@
                 >
                   <q-tooltip>Activar</q-tooltip>
                 </q-btn>
-
-                <q-btn
-                  dense
-                  flat
-                  round
-                  color="negative"
-                  icon="delete"
-                  aria-label="Eliminar aprendiz"
-                  @click="pedirEliminacion(props.row)"
-                >
-                  <q-tooltip>Eliminar</q-tooltip>
-                </q-btn>
               </div>
             </q-td>
           </template>
@@ -171,17 +159,6 @@
       etiqueta-confirmar="Desactivar"
       icono-confirmar="block"
       @confirm="desactivarAprendiz"
-    />
-
-    <ConfirmarAccion
-      v-model="confirmarEliminacion"
-      titulo="Eliminar aprendiz"
-      :mensaje="mensajeEliminacion"
-      :palabra="aprendizAEliminar?.nombre || ''"
-      instruccion="Para confirmar, escribe el nombre completo del aprendiz:"
-      etiqueta-confirmar="Eliminar"
-      icono-confirmar="delete_forever"
-      @confirm="eliminarAprendiz"
     />
 
     <FormDialog
@@ -226,7 +203,8 @@
               label="Documento"
               outlined
               dense
-              :rules="[textoObligatorio]"
+              hint="Solo letras, números, espacios y guiones"
+              :rules="[documentoTexto]"
               lazy-rules
             >
               <template #prepend>
@@ -241,7 +219,8 @@
               label="Nombre completo"
               outlined
               dense
-              :rules="[textoObligatorio]"
+              hint="Solo letras y espacios"
+              :rules="[nombreTexto]"
               lazy-rules
             >
               <template #prepend>
@@ -327,7 +306,8 @@ import ConfirmarAccion from '../components/ConfirmarAccion.vue'
 import FormDialog from '../components/FormDialog.vue'
 import { iniciales, estiloAvatar } from '../utils/avatar.js'
 import {
-  textoObligatorio,
+  documentoTexto,
+  nombreTexto,
   emailObligatorio,
   seleccionObligatoria,
 } from '../utils/validaciones.js'
@@ -350,16 +330,6 @@ const aprendizADesactivar = ref(null)
 const mensajeDesactivacion = computed(() =>
   aprendizADesactivar.value
     ? `Vas a desactivar a ${aprendizADesactivar.value.nombre}. Dejará de contar como aprendiz activo, pero sus datos se conservan y podrás activarlo de nuevo.`
-    : ''
-)
-
-// Confirmación por texto antes de eliminar (debe escribir el nombre completo).
-const confirmarEliminacion = ref(false)
-const aprendizAEliminar = ref(null)
-
-const mensajeEliminacion = computed(() =>
-  aprendizAEliminar.value
-    ? `Vas a eliminar definitivamente a ${aprendizAEliminar.value.nombre}. Esta acción no se puede deshacer.`
     : ''
 )
 
@@ -488,28 +458,6 @@ function desactivarAprendiz() {
   const aprendiz = aprendizADesactivar.value
   aprendizADesactivar.value = null
   if (aprendiz) cambiarEstado(aprendiz, 'inactive')
-}
-
-function pedirEliminacion(aprendiz) {
-  aprendizAEliminar.value = aprendiz
-  confirmarEliminacion.value = true
-}
-
-async function eliminarAprendiz() {
-  const aprendiz = aprendizAEliminar.value
-  aprendizAEliminar.value = null
-  if (!aprendiz) return
-
-  try {
-    await api.delete(`/aprendices/${aprendiz._id}`)
-    $q.notify({ type: 'positive', message: 'Aprendiz eliminado' })
-    listar()
-  } catch (error) {
-    $q.notify({
-      type: 'negative',
-      message: mensajeError(error, 'No se pudo eliminar el aprendiz'),
-    })
-  }
 }
 
 async function cambiarEstado(aprendiz, accion) {

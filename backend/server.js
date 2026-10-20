@@ -11,7 +11,6 @@ import { validateJWT } from "./middlewares/validateJWT.js";
 import { routerUsuario } from "./routes/usuarios.routes.js";
 import { routerCurso } from "./routes/cursos.routes.js";
 import { routerAprendiz } from "./routes/aprendices.routes.js";
-import { routerInstructor } from "./routes/instructores.routes.js";
 
 dotenv.config();
 
@@ -68,7 +67,6 @@ class Server {
     // Privado: requieren token.
     this.app.use("/api/cursos", validateJWT, routerCurso);
     this.app.use("/api/aprendices", validateJWT, routerAprendiz);
-    this.app.use("/api/instructores", validateJWT, routerInstructor);
 
     // Ruta de cortesia para comprobar rapido que el servidor responde.
     // El nombre "/life" es un identificador y no se traduce; el mensaje si.

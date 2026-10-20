@@ -171,7 +171,8 @@ npm run dev:frontend   # http://localhost:5173
 | Método | Ruta | Descripción | Token |
 |---|---|---|---|
 | POST | `/api/usuarios/login` | Iniciar sesión (devuelve token) | no |
-| POST | `/api/usuarios/register` | Crear usuario | sí |
+| GET | `/api/usuarios` | Listar cuentas (solo ADMIN) | sí |
+| POST | `/api/usuarios/register` | Crear usuario o administrador (solo ADMIN) | sí |
 | GET | `/api/cursos` | Listar cursos | sí |
 | GET | `/api/cursos/:id` | Obtener un curso | sí |
 | POST | `/api/cursos/register` | Crear curso | sí |

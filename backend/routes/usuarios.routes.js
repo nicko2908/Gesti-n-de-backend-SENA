@@ -2,9 +2,10 @@ import { Router } from "express";
 import { usuarioCtrl } from "../controller/usuario.controller.js";
 import { usuarioVali } from "../validations/usuario.validation.js";
 import { validateJWT } from "../middlewares/validateJWT.js";
+import { validateAdmin } from "../middlewares/validateAdmin.js";
 
 const { validateRegisterUsuario, validateLogin } = usuarioVali;
-const { registerUsuario, loginUsuario } = usuarioCtrl;
+const { registerUsuario, loginUsuario, getUsuarios } = usuarioCtrl;
 
 const routerUsuario = Router();
 
@@ -14,6 +15,9 @@ const routerUsuario = Router();
 //
 // POST /api/usuarios/login    -> iniciar sesion y recibir el token
 routerUsuario.post("/login", validateLogin, loginUsuario);
+
+// GET /api/usuarios -> listar cuentas para el panel (solo administradores)
+routerUsuario.get("/", validateJWT, validateAdmin, getUsuarios);
 
 // El REGISTRO es interno: crear cuentas es una tarea de alguien que ya entro,
 // no algo que cualquiera pueda hacer desde afuera. Por eso lleva validateJWT
@@ -26,6 +30,7 @@ routerUsuario.post("/login", validateLogin, loginUsuario);
 routerUsuario.post(
   "/register",
   validateJWT,
+  validateAdmin,
   validateRegisterUsuario,
   registerUsuario
 );

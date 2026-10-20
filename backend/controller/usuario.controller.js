@@ -20,12 +20,13 @@ const usuarioCtrl = {};
  * personas con la misma contraseña no terminen con el mismo hash.
  */
 usuarioCtrl.registerUsuario = async (req, res) => {
-  const { nombre, email, password } = req.body;
+  const { nombre, email, password, rol } = req.body;
   try {
     const newUsuario = new Usuario({
       nombre: nombre.toUpperCase().trim(),
       email: email.toLowerCase().trim(),
       password,
+      rol: rol || "USER",
     });
 
     // Hashear antes de guardar
@@ -34,6 +35,19 @@ usuarioCtrl.registerUsuario = async (req, res) => {
 
     await newUsuario.save();
     res.json({ msg: "Usuario registrado correctamente" });
+  } catch (error) {
+    res.status(400).json({ msg: "No fue posible terminar la operacion" });
+  }
+};
+
+/**
+ * Listar usuarios (sin password: el modelo lo quita en toJSON).
+ * Se usan en el panel para separar administradores activos y usuarios.
+ */
+usuarioCtrl.getUsuarios = async (req, res) => {
+  try {
+    const usuarios = await Usuario.find().sort({ createdAt: -1 });
+    res.json(usuarios);
   } catch (error) {
     res.status(400).json({ msg: "No fue posible terminar la operacion" });
   }

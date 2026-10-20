@@ -16,7 +16,6 @@ const {
   updateAprendiz,
   activeAprendiz,
   inactiveAprendiz,
-  deleteAprendiz,
 } = aprendizCtrl;
 
 const routerAprendiz = Router();
@@ -43,8 +42,5 @@ routerAprendiz.put("/active/:id", validateExistAprendiz, activeAprendiz);
 
 // PUT /api/aprendices/inactive/:id    -> desactivar
 routerAprendiz.put("/inactive/:id", validateExistAprendiz, inactiveAprendiz);
-
-// DELETE /api/aprendices/:id          -> eliminar del sistema
-routerAprendiz.delete("/:id", validateExistAprendiz, deleteAprendiz);
 
 export { routerAprendiz };

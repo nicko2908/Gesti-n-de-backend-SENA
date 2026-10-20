@@ -77,13 +77,19 @@
             </q-tooltip>
           </q-item>
 
-          <q-item clickable v-ripple :to="{ name: 'instructores' }" class="rail__item">
+          <q-item
+            v-if="auth.usuario?.rol === 'ADMIN'"
+            clickable
+            v-ripple
+            :to="{ name: 'usuarios' }"
+            class="rail__item"
+          >
             <q-item-section avatar>
-              <q-icon name="supervisor_account" size="24px" />
+              <q-icon name="manage_accounts" size="24px" />
             </q-item-section>
-            <q-item-section>Instructores</q-item-section>
+            <q-item-section>Usuarios</q-item-section>
             <q-tooltip v-if="!expandido" anchor="center right" self="center left">
-              Instructores
+              Usuarios
             </q-tooltip>
           </q-item>
         </q-list>

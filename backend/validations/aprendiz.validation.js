@@ -8,6 +8,7 @@
 import { check } from "express-validator";
 import { validateFields } from "../middlewares/validateFields.js";
 import { aprendizHelper } from "../helpers/aprendiz.helper.js";
+import { SOLO_LETRAS, ALFANUMERICO } from "./textoPatterns.js";
 
 const { validateExistAprendizById, validateExistCurso, validateExistDocumento } =
   aprendizHelper;
@@ -22,10 +23,20 @@ aprendizVali.validateRegisterAprendiz = [
     .trim()
     .notEmpty()
     .bail()
+    .matches(ALFANUMERICO)
+    .withMessage(
+      "El documento solo puede contener letras, numeros, espacios y guiones"
+    )
+    .bail()
     .custom(async (documento) => {
       await validateExistDocumento(documento);
     }),
-  check("nombre", "El nombre es obligatorio").trim().notEmpty(),
+  check("nombre", "El nombre es obligatorio")
+    .trim()
+    .notEmpty()
+    .bail()
+    .matches(SOLO_LETRAS)
+    .withMessage("El nombre solo puede contener letras y espacios"),
   check("email", "El email es obligatorio")
     .trim()
     .notEmpty()
@@ -58,10 +69,20 @@ aprendizVali.validateUpdateAprendiz = [
     .trim()
     .notEmpty()
     .bail()
+    .matches(ALFANUMERICO)
+    .withMessage(
+      "El documento solo puede contener letras, numeros, espacios y guiones"
+    )
+    .bail()
     .custom(async (documento, { req }) => {
       await validateExistDocumento(documento, req.params.id);
     }),
-  check("nombre", "El nombre es obligatorio").trim().notEmpty(),
+  check("nombre", "El nombre es obligatorio")
+    .trim()
+    .notEmpty()
+    .bail()
+    .matches(SOLO_LETRAS)
+    .withMessage("El nombre solo puede contener letras y espacios"),
   check("email", "El email es obligatorio")
     .trim()
     .notEmpty()

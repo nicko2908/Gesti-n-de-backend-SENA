@@ -105,18 +105,6 @@
                 >
                   <q-tooltip>Activar</q-tooltip>
                 </q-btn>
-
-                <q-btn
-                  dense
-                  flat
-                  round
-                  color="negative"
-                  icon="delete"
-                  aria-label="Eliminar curso"
-                  @click="pedirEliminacion(props.row)"
-                >
-                  <q-tooltip>Eliminar</q-tooltip>
-                </q-btn>
               </div>
             </q-td>
           </template>
@@ -160,17 +148,6 @@
       @confirm="desactivarCurso"
     />
 
-    <ConfirmarAccion
-      v-model="confirmarEliminacion"
-      titulo="Eliminar curso"
-      :mensaje="mensajeEliminacion"
-      :palabra="cursoAEliminar?.nombre || ''"
-      instruccion="Para confirmar, escribe el nombre completo del curso:"
-      etiqueta-confirmar="Eliminar"
-      icono-confirmar="delete_forever"
-      @confirm="eliminarCurso"
-    />
-
     <FormDialog
       v-model="dialogo"
       :titulo="editando ? 'Editar curso' : 'Nuevo curso'"
@@ -194,8 +171,8 @@
               label="Código"
               outlined
               dense
-              hint="Código único del programa"
-              :rules="[textoObligatorio]"
+              hint="Letras, números, espacios y guiones"
+              :rules="[codigoTexto]"
               lazy-rules
             >
               <template #prepend>
@@ -228,7 +205,8 @@
               label="Nombre completo"
               outlined
               dense
-              :rules="[textoObligatorio]"
+              hint="Solo letras y espacios"
+              :rules="[nombreTexto]"
               lazy-rules
             >
               <template #prepend>
@@ -259,7 +237,8 @@ import TablePanel from '../components/TablePanel.vue'
 import ConfirmarAccion from '../components/ConfirmarAccion.vue'
 import FormDialog from '../components/FormDialog.vue'
 import {
-  textoObligatorio,
+  nombreTexto,
+  codigoTexto,
   duracionObligatoria,
 } from '../utils/validaciones.js'
 
@@ -281,17 +260,6 @@ const mensajeDesactivacion = computed(() => {
   if (!curso) return ''
   const detalle = curso.codigo ? `${curso.nombre} (${curso.codigo})` : curso.nombre
   return `Vas a desactivar el curso ${detalle}. Dejará de estar disponible para asignar aprendices, pero podrás activarlo de nuevo.`
-})
-
-// Confirmación por texto antes de eliminar (debe escribir el nombre completo).
-const confirmarEliminacion = ref(false)
-const cursoAEliminar = ref(null)
-
-const mensajeEliminacion = computed(() => {
-  const curso = cursoAEliminar.value
-  if (!curso) return ''
-  const detalle = curso.codigo ? `${curso.nombre} (${curso.codigo})` : curso.nombre
-  return `Vas a eliminar definitivamente el curso ${detalle}. Esta acción no se puede deshacer.`
 })
 
 const columns = [
@@ -367,28 +335,6 @@ function desactivarCurso() {
   const curso = cursoADesactivar.value
   cursoADesactivar.value = null
   if (curso) cambiarEstado(curso, 'inactive')
-}
-
-function pedirEliminacion(curso) {
-  cursoAEliminar.value = curso
-  confirmarEliminacion.value = true
-}
-
-async function eliminarCurso() {
-  const curso = cursoAEliminar.value
-  cursoAEliminar.value = null
-  if (!curso) return
-
-  try {
-    await api.delete(`/cursos/${curso._id}`)
-    $q.notify({ type: 'positive', message: 'Curso eliminado' })
-    listar()
-  } catch (error) {
-    $q.notify({
-      type: 'negative',
-      message: mensajeError(error, 'No se pudo eliminar el curso'),
-    })
-  }
 }
 
 async function cambiarEstado(curso, accion) {

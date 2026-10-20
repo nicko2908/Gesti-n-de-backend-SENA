@@ -6,7 +6,7 @@ import DashboardLayout from '../layouts/DashboardLayout.vue'
 import DashboardView from '../views/DashboardView.vue'
 import CursosView from '../views/CursosView.vue'
 import AprendicesView from '../views/AprendicesView.vue'
-import InstructoresView from '../views/InstructoresView.vue'
+import UsuariosView from '../views/UsuariosView.vue'
 
 const routes = [
   // La app inicia directamente en el login (sin landing intermedia).
@@ -21,9 +21,12 @@ const routes = [
       { path: '', name: 'dashboard', component: DashboardView },
       { path: 'cursos', name: 'cursos', component: CursosView },
       { path: 'aprendices', name: 'aprendices', component: AprendicesView },
-      { path: 'instructores', name: 'instructores', component: InstructoresView },
+      { path: 'usuarios', name: 'usuarios', component: UsuariosView, meta: { requiresAdmin: true } },
     ],
   },
+  // Cualquier URL desconocida (incluida la antigua /dashboard/instructores)
+  // vuelve al panel principal.
+  { path: '/:pathMatch(.*)*', redirect: { name: 'dashboard' } },
 ]
 
 const router = createRouter({
@@ -36,9 +39,14 @@ const router = createRouter({
 router.beforeEach((to) => {
   const auth = useAuthStore()
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin)
 
   if (requiresAuth && !auth.isAuthenticated) {
     return { name: 'login' }
+  }
+
+  if (requiresAdmin && auth.usuario?.rol !== 'ADMIN') {
+    return { name: 'dashboard' }
   }
 
   if (to.name === 'login' && auth.isAuthenticated) {

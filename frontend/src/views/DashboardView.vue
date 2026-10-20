@@ -10,7 +10,7 @@
       <div class="section-title q-mb-sm">Resumen</div>
 
       <div class="row q-col-gutter-md">
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6">
           <q-card
             flat
             v-ripple
@@ -38,7 +38,7 @@
           </q-card>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6">
           <q-card
             flat
             v-ripple
@@ -61,36 +61,6 @@
                 </div>
                 <div class="stat-card__label">Cursos inscritos</div>
                 <div class="stat-card__hint">{{ cursosActivos }} activos</div>
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-4">
-          <q-card
-            flat
-            v-ripple
-            class="stat-card cursor-pointer"
-            style="--accent: var(--c-violet)"
-            role="link"
-            tabindex="0"
-            @click="irA('instructores')"
-            @keydown.enter.prevent="irA('instructores')"
-            @keydown.space.prevent="irA('instructores')"
-          >
-            <q-card-section class="row items-center no-wrap q-gutter-md">
-              <div class="stat-card__icon">
-                <q-icon name="supervisor_account" size="28px" />
-              </div>
-              <div>
-                <div class="stat-card__number">
-                  <q-skeleton v-if="cargando" type="text" width="48px" />
-                  <template v-else>{{ totalInstructores }}</template>
-                </div>
-                <div class="stat-card__label">Instructores inscritos</div>
-                <div class="stat-card__hint">
-                  {{ instructoresActivos }} activos
-                </div>
               </div>
             </q-card-section>
           </q-card>
@@ -231,21 +201,6 @@
                   <div class="mini__fill" :style="{ width: pctCursosActivos + '%' }"></div>
                 </div>
               </div>
-
-              <div class="mini">
-                <div class="mini__head">
-                  <span>Instructores</span>
-                  <span>
-                    {{ instructoresActivos }}/{{ totalInstructores }} activos
-                  </span>
-                </div>
-                <div class="mini__track">
-                  <div
-                    class="mini__fill"
-                    :style="{ width: pctInstructoresActivos + '%' }"
-                  ></div>
-                </div>
-              </div>
             </q-card-section>
           </q-card>
         </div>
@@ -257,7 +212,7 @@
       <div class="section-title q-mb-sm">Accesos rápidos</div>
 
       <div class="row q-col-gutter-md">
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6">
           <q-card flat class="quick-card" style="--accent: var(--c-blue)">
             <q-card-section>
               <div class="text-h6">Cursos</div>
@@ -267,7 +222,7 @@
           </q-card>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6">
           <q-card flat class="quick-card" style="--accent: var(--c-green)">
             <q-card-section>
               <div class="text-h6">Aprendices</div>
@@ -276,20 +231,6 @@
                 color="primary"
                 label="Ir a aprendices"
                 to="/dashboard/aprendices"
-              />
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-4">
-          <q-card flat class="quick-card" style="--accent: var(--c-violet)">
-            <q-card-section>
-              <div class="text-h6">Instructores</div>
-              <p class="text-grey-7">Administra los instructores de la entidad.</p>
-              <q-btn
-                color="primary"
-                label="Ir a instructores"
-                to="/dashboard/instructores"
               />
             </q-card-section>
           </q-card>
@@ -321,21 +262,16 @@ const auth = useAuthStore()
 
 const aprendices = ref([])
 const cursos = ref([])
-const instructores = ref([])
 const cargando = ref(false)
 
 const totalAprendices = computed(() => aprendices.value.length)
 const totalCursos = computed(() => cursos.value.length)
-const totalInstructores = computed(() => instructores.value.length)
 
 const aprendicesActivos = computed(
   () => aprendices.value.filter((a) => a.status === 0).length
 )
 const cursosActivos = computed(
   () => cursos.value.filter((c) => c.status === 0).length
-)
-const instructoresActivos = computed(
-  () => instructores.value.filter((i) => i.status === 0).length
 )
 
 // --- Indicadores ---
@@ -344,9 +280,6 @@ const pctAprendicesActivos = computed(() =>
 )
 const pctCursosActivos = computed(() =>
   porciento(cursosActivos.value, totalCursos.value)
-)
-const pctInstructoresActivos = computed(() =>
-  porciento(instructoresActivos.value, totalInstructores.value)
 )
 
 // Horas de formación = suma de la duración de los cursos activos.
@@ -406,18 +339,10 @@ onMounted(async () => {
   cargando.value = true
   try {
     // No hay endpoints de conteo: se traen los listados y se calcula aquí.
-    const [
-      { data: listaAprendices },
-      { data: listaCursos },
-      { data: listaInstructores },
-    ] = await Promise.all([
-      api.get('/aprendices'),
-      api.get('/cursos'),
-      api.get('/instructores'),
-    ])
+    const [{ data: listaAprendices }, { data: listaCursos }] =
+      await Promise.all([api.get('/aprendices'), api.get('/cursos')])
     aprendices.value = listaAprendices
     cursos.value = listaCursos
-    instructores.value = listaInstructores
   } catch (error) {
     $q.notify({
       type: 'negative',
@@ -649,7 +574,7 @@ onMounted(async () => {
   flex: 0 0 12px;
 }
 
-/* Mini barras de cursos / instructores */
+/* Mini barra de cursos */
 .mini__head {
   display: flex;
   justify-content: space-between;

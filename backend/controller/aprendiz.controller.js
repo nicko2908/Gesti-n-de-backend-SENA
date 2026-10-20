@@ -93,15 +93,4 @@ aprendizCtrl.inactiveAprendiz = async (req, res) => {
   }
 };
 
-// Eliminar un aprendiz del sistema
-aprendizCtrl.deleteAprendiz = async (req, res) => {
-  const { id } = req.params;
-  try {
-    await Aprendiz.findByIdAndDelete(id);
-    res.json({ msg: "Aprendiz eliminado correctamente" });
-  } catch (error) {
-    res.status(400).json({ msg: "No fue posible terminar la operacion" });
-  }
-};
-
 export { aprendizCtrl };

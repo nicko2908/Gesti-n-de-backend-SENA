@@ -7,6 +7,7 @@
 import { check } from "express-validator";
 import { validateFields } from "../middlewares/validateFields.js";
 import { usuarioHelper } from "../helpers/usuario.helper.js";
+import { SOLO_LETRAS } from "./textoPatterns.js";
 
 const { validateExistEmail } = usuarioHelper;
 
@@ -16,7 +17,12 @@ const usuarioVali = {};
  * Valida los datos para registrar un usuario.
  */
 usuarioVali.validateRegisterUsuario = [
-  check("nombre", "El nombre es obligatorio").notEmpty(),
+  check("nombre", "El nombre es obligatorio")
+    .trim()
+    .notEmpty()
+    .bail()
+    .matches(SOLO_LETRAS)
+    .withMessage("El nombre solo puede contener letras y espacios"),
   check("email", "El email es obligatorio")
     .notEmpty()
     .bail()
@@ -30,7 +36,14 @@ usuarioVali.validateRegisterUsuario = [
     .notEmpty()
     .bail()
     .isLength({ min: 6 })
-    .withMessage("La contraseña debe tener al menos 6 caracteres"),
+    .withMessage("La contraseña debe tener al menos 6 caracteres")
+    .bail()
+    .custom((password) => password.trim().length > 0)
+    .withMessage("La contraseña no puede estar vacia"),
+  check("rol", "El rol no es valido")
+    .optional()
+    .isIn(["ADMIN", "USER"])
+    .withMessage("El rol no es valido"),
   validateFields,
 ];
 
